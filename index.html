@@ -1,23 +1,57 @@
-<style>
-  body {
-    font-family: "Inter", "Segoe UI", sans-serif;
-    margin: 0;
-    padding: 1em;
-    background: linear-gradient(to bottom right, #f4f9ff, #e8f0fc);
-  }
-  .quote-box {
-    padding: 1.5em;
-    border-left: 4px solid #3182ce;
-    background-color: #ffffffcc;
-    border-radius: 10px;
-    font-size: 1.2em;
-    color: #222;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  }
-  .author {
-    margin-top: 0.75em;
-    text-align: right;
-    font-style: italic;
-    color: #666;
-  }
-</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Quote</title>
+  <style>
+    body {
+      font-family: "Inter", "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 2em;
+      background: linear-gradient(to bottom right, #f4f9ff, #e8f0fc);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .quote-box {
+      max-width: 600px;
+      padding: 2em;
+      border-left: 5px solid #3182ce;
+      background-color: #ffffffdd;
+      border-radius: 10px;
+      font-size: 1.3em;
+      color: #222;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .author {
+      margin-top: 1em;
+      text-align: right;
+      font-style: italic;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="quote-box" id="quoteBox">Loading quote...</div>
+
+  <script>
+    fetch("https://zenquotes.io/api/today")
+      .then(res => res.json())
+      .then(data => {
+        const quote = data[0].q;
+        const author = data[0].a;
+        document.getElementById("quoteBox").innerHTML = `
+          “${quote}”
+          <div class="author">— ${author}</div>
+        `;
+      })
+      .catch(() => {
+        document.getElementById("quoteBox").innerHTML = "Couldn't load quote today. Try again later.";
+      });
+  </script>
+</body>
+</html>
