@@ -1,57 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Daily Quote</title>
-  <style>
-    body {
-      font-family: "Inter", "Segoe UI", sans-serif;
-      margin: 0;
-      padding: 2em;
-      background: linear-gradient(to bottom right, #f4f9ff, #e8f0fc);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
-
-    .quote-box {
-      max-width: 600px;
-      padding: 2em;
-      border-left: 5px solid #3182ce;
-      background-color: #ffffffdd;
-      border-radius: 10px;
-      font-size: 1.3em;
-      color: #222;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    }
-
-    .author {
-      margin-top: 1em;
-      text-align: right;
-      font-style: italic;
-      color: #555;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Daily Quote</title>
+<style>
+  body {
+    font-family: "Inter", "Segoe UI", sans-serif;
+    margin: 0;
+    padding: 2em;
+    background: linear-gradient(to bottom right, #f4f9ff, #e8f0fc);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  .quote-box {
+    max-width: 600px;
+    padding: 2em;
+    border-left: 5px solid #3182ce;
+    background-color: #ffffffdd;
+    border-radius: 10px;
+    font-size: 1.3em;
+    color: #222;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+  .author {
+    margin-top: 1em;
+    text-align: right;
+    font-style: italic;
+    color: #555;
+  }
+</style>
 </head>
 <body>
   <div class="quote-box" id="quoteBox">Loading quote...</div>
-
   <script>
-    fetch("https://zenquotes.io/api/today")
-      .then(res => res.json())
-      .then(data => {
-        const quote = data[0].q;
-        const author = data[0].a;
-        document.getElementById("quoteBox").innerHTML = `
-          “${quote}”
-          <div class="author">— ${author}</div>
-        `;
-      })
-      .catch(() => {
-        document.getElementById("quoteBox").innerHTML = "Couldn't load quote today. Try again later.";
-      });
+    // Your 60-day quotes (only Mon-Fri dates, no weekends)
+    const quotes = [
+      {"date":"2025-08-05","quote":"When the team takes ownership of its problems, success follows.","author":"Jocko Willink"},
+      {"date":"2025-08-06","quote":"True leadership is serving others, not yourself.","author":"John C. Maxwell"},
+      {"date":"2025-08-07","quote":"Coming together is a beginning, staying together is progress, and working together is success.","author":"Henry Ford"},
+      {"date":"2025-08-08","quote":"He who has never learned to obey cannot be a good commander.","author":"Aristotle"},
+      {"date":"2025-08-11","quote":"Teamwork divides the task and multiplies the success.","author":"Unknown"},
+      {"date":"2025-08-12","quote":"Do not wait for leaders; do it alone, person to person.","author":"Mother Teresa"},
+      {"date":"2025-08-13","quote":"Kindness is the sunshine in which virtue grows.","author":"Robert Green Ingersoll"},
+      {"date":"2025-08-14","quote":"In a world where you can be anything, be kind.","author":"Unknown"},
+      {"date":"2025-08-15","quote":"Good leaders create a vision, articulate the vision, passionately own the vision, and relentlessly drive it to completion.","author":"Jack Welch"},
+      {"date":"2025-08-18","quote":"Great leaders inspire greatness in others.","author":"Lolly Daskal"},
+      {"date":"2025-08-19","quote":"The way a team plays as a whole determines its success.","author":"Babe Ruth"},
+      {"date":"2025-08-20","quote":"Strong teams are built by leaders who empower others.","author":"Unknown"},
+      {"date":"2025-08-21","quote":"Leadership is not about being in charge. It is about taking care of those in your charge.","author":"Simon Sinek"},
+      {"date":"2025-08-22","quote":"A genuine leader is not a searcher for consensus but a molder of consensus.","author":"Martin Luther King Jr."},
+      {"date":"2025-08-25","quote":"The price of greatness is responsibility.","author":"Winston Churchill"},
+      {"date":"2025-08-26","quote":"Success is best when it’s shared.","author":"Howard Schultz"},
+      {"date":"2025-08-27","quote":"Management is doing things right; leadership is doing the right things.","author":"Peter Drucker"},
+      {"date":"2025-08-28","quote":"Great things in business are never done by one person. They’re done by a team of people.","author":"Steve Jobs"},
+      {"date":"2025-08-29","quote":"Great managers play to people's strengths.","author":"Marcus Buckingham"},
+      {"date":"2025-09-01","quote":"What we do for ourselves dies with us. What we do for others remains and is immortal.","author":"Albert Pike"},
+      {"date":"2025-09-02","quote":"Your values show in how you treat people when you don’t need anything from them.","author":"Unknown"},
+      {"date":"2025-09-03","quote":"You do not lead by hitting people over the head. That’s assault, not leadership.","author":"Dwight D. Eisenhower"},
+      {"date":"2025-09-04","quote":"Kindness is a language which the deaf can hear and the blind can see.","author":"Mark Twain"},
+      {"date":"2025-09-05","quote":"Courage is what it takes to stand up and speak; courage is also what it takes to sit down and listen.","author":"Winston Churchill"},
+      {"date":"2025-09-08","quote":"Kind words can be short and easy to speak, but their echoes are truly endless.","author":"Mother Teresa"},
+      {"date":"2025-09-09","quote":"Great leaders are willing to sacrifice their own personal interests for the good of the team.","author":"John Wooden"},
+      {"date":"2025-09-10","quote":"Your actions define you more than your words.","author":"Unknown"},
+      {"date":"2025-09-11","quote":"Nothing strengthens authority so much as silence.","author":"Leonardo da Vinci"},
+      {"date":"2025-09-12","quote":"Leadership is the capacity to translate vision into reality.","author":"Warren Bennis"},
+      {"date":"2025-09-15","quote":"Leadership is not about titles, positions, or flowcharts. It is about one life influencing another.","author":"John C. Maxwell"},
+      {"date":"2025-09-16","quote":"A leader takes people where they want to go. A great leader takes people where they don’t necessarily want to go, but ought to be.","author":"Rosalynn Carter"},
+      {"date":"2025-09-17","quote":"None of us is as smart as all of us.","author":"Ken Blanchard"},
+      {"date":"2025-09-18","quote":"Accountability is the foundation of trust.","author":"Simon Sinek"},
+      {"date":"2025-09-19","quote":"Accountability is the glue that ties commitment to results.","author":"Will Craig"},
+      {"date":"2025-09-22","quote":"We rise by lifting others.","author":"Robert Ingersoll"},
+      {"date":"2025-09-23","quote":"What you do has far greater impact than what you say.","author":"Stephen R. Covey"},
+      {"date":"2025-09-24","quote":"Accountability breeds response-ability.","author":"Stephen R. Covey"},
+      {"date":"2025-09-25","quote":"Being positive in a negative situation is not naive. It's leadership.","author":"Ralph Marston"},
+      {"date":"2025-09-26","quote":"Leaders inspire others to dream more, learn more, do more, and become more.","author":"John Quincy Adams"},
+      {"date":"2025-09-29","quote":"No act of kindness, no matter how small, is ever wasted.","author":"Aesop"},
+      {"date":"2025-09-30","quote":"Good leaders must first become good servants.","author":"Robert K. Greenleaf"},
+      {"date":"2025-10-01","quote":"The greatest leader is not necessarily the one who does the greatest things. They are the one that gets people to do the greatest things.","author":"Ronald Reagan"},
+      {"date":"2025-10-02","quote":"Good management is the art of making problems so interesting that everyone wants to get to work and solve them.","author":"Paul Hawken"},
+      {"date":"2025-10-03","quote":"We cannot hold a torch to light another’s path without brightening our own.","author":"Ben Sweetland"},
+      {"date":"2025-10-06","quote":"A team is not a group of people that work together. A team is a group of people that trust each other.","author":"Simon Sinek"},
+      {"date":"2025-10-07","quote":"The function of leadership is to produce more leaders, not more followers.","author":"Ralph Nader"},
+      {"date":"2025-10-08","quote":"The way we treat people is the reflection of our values.","author":"Margaret Wheatley"},
+      {"date":"2025-10-09","quote":"A manager accepts the status quo; a leader challenges it.","author":"Warren Bennis"},
+      {"date":"2025-10-10","quote":"When you make a mistake, own it, learn from it, and move forward stronger.","author":"Unknown"},
+      {"date":"2025-10-13","quote":"True leadership lies in guiding others to success.","author":"Bill Owens"},
+      {"date":"2025-10-14","quote":"The strength of the team is each individual member. The strength of each member is the team.","author":"Phil Jackson"},
+      {"date":"2025-10-15","quote":"Do not follow where the path may lead. Go instead where there is no path and leave a trail.","author":"Ralph Waldo Emerson"},
+      {"date":"2025-10-16","quote":"Kindness costs nothing but means everything.","author":"Unknown"},
+      {"date":"2025-10-17","quote":"The best way to find yourself is to lose yourself in the service of others.","author":"Mahatma Gandhi"},
+      {"date":"2025-10-20","quote":"The best teamwork comes from men who are working independently toward one goal in unison.","author":"James Cash Penney"},
+      {"date":"2025-10-21","quote":"People don’t care how much you know until they know how much you care.","author":"Theodore Roosevelt"},
+      {"date":"2025-10-22","quote":"A culture of accountability makes a good organization great.","author":"Henry Evans"},
+      {"date":"2025-10-23","quote":"A leader is one who knows the way, goes the way, and shows the way.","author":"John C. Maxwell"},
+      {"date":"2025-10-24","quote":"Empower others to shine, and you’ll always be surrounded by light.","author":"Unknown"},
+      {"date":"2025-10-27","quote":"Kindness begins with the understanding that we all struggle.","author":"Charles Glassman"}
+    ];
+
+    function findQuoteForToday() {
+      const today = new Date();
+      // Format as yyyy-mm-dd
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      const todayStr = `${yyyy}-${mm}-${dd}`;
+
+      // Find quote matching today's date
+      const q = quotes.find(q => q.date === todayStr);
+      return q || null;
+    }
+
+    function displayQuote() {
+      const container = document.getElementById("quoteBox");
+      const quoteObj = findQuoteForToday();
+
+      if (quoteObj) {
+        container.innerHTML = `“${quoteObj.quote}”<div class="author">— ${quoteObj.author}</div>`;
+      } else {
+        container.innerHTML = "No quote for today. Enjoy your weekend or a day off!";
+      }
+    }
+
+    displayQuote();
   </script>
 </body>
 </html>
